@@ -1,56 +1,47 @@
-import kotlin.random.Random
-
 data class Post(
-    var id: Int,
-    val owner_id: Int,
-    val from_id: Int,
-    val created_by: Int,
+    val id: Int,
+    val ownerId: Int,
+    val fromId: Int,
+    val createdBy: Int,
     val like: Int,
     val text: String,
-    val reply_owner_id: Int,
-    val reply_post_id: Int,
-    val friends_only: Boolean = true,
-    val is_pinned: Boolean = true
+    val replyOwnerId: Int,
+    val replyPostId: Int,
+    val friendsOnly: Boolean = true,
+    val isPinned: Boolean = true,
+    val date :Long
 ) {}
 
-object Likes {
-    fun add(count: Int, user_likes: Boolean, can_like: Boolean, can_publish: Boolean) {
-        val count = count
-        val user_likes = user_likes
-        val can_like = can_like
-        val can_publish = can_publish
-    }
-}
+data class Likes(
+    val count: Int,
+    val user_likes: Boolean,
+    val can_like: Boolean,
+    val can_publish: Boolean
+) {}
 
 object WallService {
     private var posts = emptyArray<Post>()
-    fun add(post: Post, id: Int): Post {
-        var post = post
-        posts += post
-        post.id = id + 1
+    private var nextId = 1
+    fun add(post: Post): Post {
+        posts += post.copy(id = nextId++)
         return posts.last()
     }
 
-    fun update(post: Post, id: Int): Boolean {
+    fun update(newPost: Post): Boolean {
         for ((index, post) in posts.withIndex()) {
-            if (post.id == id) {
-                posts[index] = post.copy(
-                    owner_id = post.owner_id + 1,
-                    from_id = post.from_id + 1,
-                    created_by = post.created_by + 1,
-                    like = post.like + 1,
-                    reply_owner_id = post.reply_owner_id + 1,
-                    reply_post_id = post.reply_post_id + 1
-                )
+            if (post.id == newPost.id) {
+                posts[index] = newPost.copy()
+                return true
             }
         }
-        if (post.id == id) {return true
-        } else return false
+        return false
     }
 }
 
 fun main(args: Array<String>) {
-    val post = Post(1, 15, 10, 12, 10, "hello", 1, 1)
-    println(WallService.add(post, 1))
-    println(WallService.update(post, 2))
+    val post = Post(1, 15, 10, 12, 10, "hello", 1, 1,date = 16688636)
+    val posts = Post(2, 15, 10, 12, 10, "hello", 1, 1,date = 116688637)
+    println(WallService.add(post))
+    println(WallService.add(posts))
+    println(WallService.update(posts))
 }
