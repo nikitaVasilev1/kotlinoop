@@ -31,17 +31,17 @@ object WallService {
         for ((index, post) in posts.withIndex()) {
             if (post.id == newPost.id) {
                 posts[index] = newPost.copy(
-                    id,
+                    id = post.id,
                     ownerId = post.ownerId,
                     date = post.date,
-                    fromId,
-                    createdBy,
-                    like,
-                    text,
-                    replyOwnerId,
-                    replyPostId,
-                    friendsOnly,
-                    isPinned
+                    fromId = post.fromId,
+                    createdBy = post.createdBy,
+                    like = post.like,
+                    text = post.text,
+                    replyOwnerId = post.replyOwnerId,
+                    replyPostId = post.replyPostId,
+                    friendsOnly = post.friendsOnly,
+                    isPinned = post.isPinned
                 )
                 return true
             }
