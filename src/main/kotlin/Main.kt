@@ -9,14 +9,14 @@ data class Post(
     val replyPostId: Int,
     val friendsOnly: Boolean = true,
     val isPinned: Boolean = true,
-    val date :Long
+    val date: Long
 ) {}
 
 data class Likes(
     val count: Int,
-    val user_likes: Boolean,
-    val can_like: Boolean,
-    val can_publish: Boolean
+    val userLikes: Boolean,
+    val canLike: Boolean,
+    val canPublish: Boolean
 ) {}
 
 object WallService {
@@ -30,7 +30,19 @@ object WallService {
     fun update(newPost: Post): Boolean {
         for ((index, post) in posts.withIndex()) {
             if (post.id == newPost.id) {
-                posts[index] = newPost.copy()
+                posts[index] = newPost.copy(
+                    id,
+                    ownerId = post.ownerId,
+                    date = post.date,
+                    fromId,
+                    createdBy,
+                    like,
+                    text,
+                    replyOwnerId,
+                    replyPostId,
+                    friendsOnly,
+                    isPinned
+                )
                 return true
             }
         }
@@ -39,8 +51,8 @@ object WallService {
 }
 
 fun main(args: Array<String>) {
-    val post = Post(1, 15, 10, 12, 10, "hello", 1, 1,date = 16688636)
-    val posts = Post(2, 15, 10, 12, 10, "hello", 1, 1,date = 116688637)
+    val post = Post(1, 15, 10, 12, 10, "hello", 1, 1, date = 16688636)
+    val posts = Post(2, 15, 10, 12, 10, "hello", 1, 1, date = 116688637)
     println(WallService.add(post))
     println(WallService.add(posts))
     println(WallService.update(posts))
